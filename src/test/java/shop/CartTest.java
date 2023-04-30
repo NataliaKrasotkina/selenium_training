@@ -1,32 +1,38 @@
 package shop;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import parser.JsonParser;
+
+import java.io.File;
 
 public class CartTest {
 
-    @Test
-    public void getCartNameTest() {
-        String cartName = "testCart";
-        Cart testCart = new Cart(cartName);
+    private Cart cart;
+    private RealItem realItem;
+    private JsonParser jsonParser;
+    private static final double TAX = 0.2;
 
-        Assertions.assertEquals(cartName, testCart.getCartName(), "Cart name value is not correct");
+    @BeforeEach
+    public void setUp() {
+        jsonParser = new JsonParser();
+        cart = jsonParser.readFromFile(new File("src/main/resources/eugen-cart.json"));
+        realItem = new RealItem();
+        realItem.setPrice(10);
     }
 
     @Test
-    public void addRealItemTest() {
-        double price = 6;
-        double total = 0.0;
-        double tax = 0.2;
-
-        Cart cart = new Cart("cart1");
-        RealItem realItem = new RealItem();
-        realItem.setPrice(price);
-
+    public void testCalculationWhileAddingRealItem() {
+        double total = cart.getTotalPrice() + realItem.getPrice() + realItem.getPrice() * TAX;
         cart.addRealItem(realItem);
+        Assertions.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
+    }
 
-        total = total + realItem.getPrice() + realItem.getPrice() * tax;
-
+    @Test
+    public void testCalculationWhileDeletingRealItem() {
+        double total = cart.getTotalPrice() - realItem.getPrice() - realItem.getPrice() * TAX;
+        cart.deleteRealItem(realItem);
         Assertions.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
     }
 }

@@ -6,13 +6,10 @@ import org.junit.jupiter.api.Test;
 public class RealItemTest {
 
     @Test
-    public void setWeightTest() {
+    public void testToString() {
         double weight = 12;
-
         RealItem realItem = new RealItem();
         realItem.setWeight(weight);
-
-        Assertions.assertEquals(weight, realItem.getWeight(), "Weight value is not correct");
-
+        Assertions.assertTrue(realItem.toString().contains("Weight: " + weight), "toString value is not correct");
     }
 }

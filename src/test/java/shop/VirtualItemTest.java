@@ -6,12 +6,10 @@ import org.junit.jupiter.api.Test;
 public class VirtualItemTest {
 
     @Test
-    public void setSizeOnDiskTest() {
+    public void testToString() {
         double sizeOnDisk = 6;
-
         VirtualItem virtualItem = new VirtualItem();
         virtualItem.setSizeOnDisk(sizeOnDisk);
-
-        Assertions.assertEquals(sizeOnDisk, virtualItem.getSizeOnDisk(), "SizeOnDisk value is not correct");
+        Assertions.assertTrue(virtualItem.toString().contains("Size on disk: " + sizeOnDisk), "toString value is not correct");
     }
 }
