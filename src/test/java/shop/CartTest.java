@@ -13,6 +13,7 @@ public class CartTest {
     private RealItem realItem;
     private JsonParser jsonParser;
     private static final double TAX = 0.2;
+    private double total;
 
     @BeforeEach
     public void setUp() {
@@ -20,18 +21,18 @@ public class CartTest {
         cart = jsonParser.readFromFile(new File("src/main/resources/eugen-cart.json"));
         realItem = new RealItem();
         realItem.setPrice(10);
+        total = cart.getTotalPrice() + realItem.getPrice() + realItem.getPrice() * TAX;
+        cart.addRealItem(realItem);
     }
 
     @Test
     public void testCalculationWhileAddingRealItem() {
-        double total = cart.getTotalPrice() + realItem.getPrice() + realItem.getPrice() * TAX;
-        cart.addRealItem(realItem);
         Assertions.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
     }
 
     @Test
     public void testCalculationWhileDeletingRealItem() {
-        double total = cart.getTotalPrice() - realItem.getPrice() - realItem.getPrice() * TAX;
+        total = cart.getTotalPrice() - realItem.getPrice() - realItem.getPrice() * TAX;
         cart.deleteRealItem(realItem);
         Assertions.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
     }

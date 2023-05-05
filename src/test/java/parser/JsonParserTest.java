@@ -24,26 +24,21 @@ public class JsonParserTest {
 
     @Disabled
     @Test
-    public void testWriteToFile() {
+    public void testWriteToFile() throws IOException {
         Cart cartToWrite = new Cart("cart-to-write");
 
         parser.writeToFile(cartToWrite);
-        String actualFileText = null;
-        try {
-            actualFileText = Files.readString(Paths.get(String.format("src/main/resources/%s.json", cartToWrite.getCartName())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String actualFileText = Files.readString(Paths.get(String.format("src/main/resources/%s.json", cartToWrite.getCartName())));
         Assertions.assertEquals(EXPECTED_FILE_TEXT, actualFileText, "Written and read content is not equal");
     }
 
     @Test
     public void testReadFromFile() {
-        Cart expectedCart = new Cart("cart-to-read");
-        Cart cartFromFile = parser.readFromFile(new File(String.format("src/test/resources/%s.json", expectedCart.getCartName())));
+        String expectedName = "cart-to-read";
+        Cart cartFromFile = parser.readFromFile(new File(String.format("src/test/resources/%s.json", expectedName)));
         assertAll(
-                () -> Assertions.assertEquals(expectedCart.getCartName(), cartFromFile.getCartName(), "Written and read content is not equal"),
-                () -> Assertions.assertEquals(expectedCart.getTotalPrice(), cartFromFile.getTotalPrice(), "Written and read content is not equal")
+                () -> Assertions.assertEquals(expectedName, cartFromFile.getCartName(), "Written and read content is not equal"),
+                () -> Assertions.assertEquals(0.0, cartFromFile.getTotalPrice(), "Written and read content is not equal")
         );
     }
 
