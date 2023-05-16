@@ -1,12 +1,16 @@
-package shop;
+package testNG.shop;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import parser.JsonParser;
+import shop.Cart;
+import shop.RealItem;
 
 import java.io.File;
 
+@Test(groups = {"ExcludedTest"})
 public class CartTest {
 
     private Cart cart;
@@ -15,7 +19,7 @@ public class CartTest {
     private static final double TAX = 0.2;
     private double total;
 
-    @BeforeEach
+    @BeforeTest(alwaysRun = true)
     public void setUp() {
         jsonParser = new JsonParser();
         cart = jsonParser.readFromFile(new File("src/main/resources/eugen-cart.json"));
@@ -25,15 +29,15 @@ public class CartTest {
         cart.addRealItem(realItem);
     }
 
-    @Test
+    @Test(groups = {"Group1"})
     public void testCalculationWhileAddingRealItem() {
-        Assertions.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
+        Assert.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
     }
 
-    @Test
+    @Test(groups = {"Group1", "Group2"})
     public void testCalculationWhileDeletingRealItem() {
         total = cart.getTotalPrice() - realItem.getPrice() - realItem.getPrice() * TAX;
         cart.deleteRealItem(realItem);
-        Assertions.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
+        Assert.assertEquals(total, cart.getTotalPrice(), "Total value is not correct");
     }
 }
