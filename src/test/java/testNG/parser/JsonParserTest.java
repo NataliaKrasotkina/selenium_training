@@ -1,8 +1,15 @@
-package parser;
+package testNG.parser;
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import parser.JsonParser;
+import parser.NoSuchFileException;
+import parser.Parser;
 import shop.Cart;
 
 import java.io.File;
@@ -10,48 +17,50 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class JsonParserTest {
 
     private static final String EXPECTED_FILE_TEXT = "{\"cartName\":\"cart-to-write\",\"realItems\":[],\"virtualItems\":[],\"total\":0.0}";
     private static Parser parser;
 
-    @BeforeAll
+    @BeforeClass(alwaysRun = true)
     public static void setUp() {
         parser = new JsonParser();
     }
 
-    @Disabled
-    @Test
+    @DataProvider(name = "data-provider")
+    public Object[][] dpMethod() {
+        return new Object[][]{{1}, {2}, {3}, {4}, {5}, {6}};
+    }
+
+    @Test(enabled = false)
     public void testWriteToFile() throws IOException {
         Cart cartToWrite = new Cart("cart-to-write");
 
         parser.writeToFile(cartToWrite);
         String actualFileText = Files.readString(Paths.get(String.format("src/main/resources/%s.json", cartToWrite.getCartName())));
-        Assertions.assertEquals(EXPECTED_FILE_TEXT, actualFileText, "Written and read content is not equal");
+        Assert.assertEquals(EXPECTED_FILE_TEXT, actualFileText, "Written and read content is not equal");
     }
 
-    @Test
+    @Test(groups = {"Group1"})
     public void testReadFromFile() {
         String expectedName = "cart-to-read";
         Cart cartFromFile = parser.readFromFile(new File(String.format("src/test/resources/%s.json", expectedName)));
-        assertAll(
-                () -> Assertions.assertEquals(expectedName, cartFromFile.getCartName(), "Written and read content is not equal"),
-                () -> Assertions.assertEquals(0.0, cartFromFile.getTotalPrice(), "Written and read content is not equal")
-        );
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(expectedName, cartFromFile.getCartName(), "Written and read content is not equal");
+        softAssert.assertEquals(0.0, cartFromFile.getTotalPrice(), "Written and read content is not equal");
+        softAssert.assertAll();
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+    @Test(dataProvider = "data-provider")
     public void testException(int number) {
         String notExistingFileNameTemplate = "notExistingFileName";
-        Assertions.assertThrows(NoSuchFileException.class, () -> {
+        Assert.assertThrows(NoSuchFileException.class, () -> {
             parser.readFromFile(new File(String.format("src/main/resources/%s%d.json", notExistingFileNameTemplate, number)));
         });
     }
 
-    @AfterAll
+    @AfterClass
     public static void clear() {
         try {
             Files.delete(Paths.get("src/main/resources/cart-to-write.json"));

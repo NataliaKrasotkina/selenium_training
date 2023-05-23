@@ -1,7 +1,8 @@
-package shop;
+package junit.shop;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
+import shop.VirtualItem;
 
 public class VirtualItemTest {
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite5">
+    <test name="Packages">
+        <packages>
+            <package name= "testNG.*" >
+                <include name="testNG.parser"></include>
+                <exclude name="testNG.shop"></exclude>
+            </package>
+        </packages>
+    </test>
+</suite>
