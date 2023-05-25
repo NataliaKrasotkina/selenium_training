@@ -1,39 +1,39 @@
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import pages.YandexLoginPage;
 
 import java.util.concurrent.TimeUnit;
 
+import static pages.YandexLoginPage.*;
+
 public class YandexTest {
     private WebDriver driver;
-    private String password = "NK852456";
-    private String login = "NatalliaKrasotkina";
-    private String mailUrl = "https://mail.yandex.com";
-    private YandexLoginPage yandexLoginPage;
+    private final static String PASSWORD = "NK852456";
+    private final static String LOGIN = "NatalliaKrasotkina";
+    private final static String MAIL_URL = "https://mail.yandex.com";
 
     @BeforeEach
     void setup() {
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        yandexLoginPage = new YandexLoginPage();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
     void yandexTest() {
-        driver.get(mailUrl);
-        driver.findElement(yandexLoginPage.enterButton).click();
-        driver.findElement(yandexLoginPage.loginInput).sendKeys(login);
-        driver.findElement(yandexLoginPage.loginButton).click();
-        driver.findElement(yandexLoginPage.passwordInput).sendKeys(password);
-        driver.findElement(yandexLoginPage.loginButton).click();
-        By accountName = By.xpath(String.format(yandexLoginPage.accountNameTemplate, login));
-        Assertions.assertFalse(driver.findElements(accountName).isEmpty(), "Login failed");
+        driver.get(MAIL_URL);
+        driver.findElement(ENTER_BUTTON).click();
+        driver.findElement(LOGIN_INPUT).sendKeys(LOGIN);
+        driver.findElement(LOGIN_BUTTON).click();
+        driver.findElement(PASSWORD_INPUT).sendKeys(PASSWORD);
+        driver.findElement(LOGIN_BUTTON).click();
+
+        Assertions.assertEquals(LOGIN, driver.findElement(ACCOUNT_NAME).getText(), "Login failed");
     }
 
     @AfterEach
