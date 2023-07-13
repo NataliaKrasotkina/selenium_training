@@ -1,6 +1,6 @@
 package model;
 
-public class Entry {
+public class Employee {
 
     private String name;
     private String position;
@@ -9,7 +9,7 @@ public class Entry {
     private int salary;
 
 
-    public Entry(String name, String position, String office, int age, int salary) {
+    public Employee(String name, String position, String office, int age, int salary) {
         this.name = name;
         this.position = position;
         this.office = office;

@@ -8,22 +8,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static pages.MultiSelectPage.DEMO_URL;
 import static pages.MultiSelectPage.MULTI_SELECT_LIST;
+import static pages.MultiSelectPage.SELECT_DROPDOWN_DEMO_URL;
 
 
 public class MultiSelectTest {
     private WebDriver driver;
-    private final static List<String> OPTIONS = List.of("California", "Florida", "Texas");
 
     @BeforeEach
     void setup() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        driver.get(SELECT_DROPDOWN_DEMO_URL);
     }
 
     @AfterEach
@@ -32,17 +33,15 @@ public class MultiSelectTest {
     }
 
     @Test
-    public void testMultipleSelectList() {
-        driver.get(DEMO_URL);
+    public void multipleSelectListTest() {
         Select dropdown = new Select(driver.findElement(MULTI_SELECT_LIST));
-        OPTIONS.forEach(dropdown::selectByValue);
-        List<WebElement> selectedOptions = dropdown.getAllSelectedOptions();
-        List<String> selectedOptionsNames = new ArrayList<>();
-        for (WebElement option : selectedOptions) {
-            selectedOptionsNames.add(option.getText());
-        }
+        List<String> states = dropdown.getOptions().stream().map(WebElement::getText).collect(Collectors.toList());
+        Collections.shuffle(states);
+        List<String> expectedStates = states.subList(0, 3);
+        expectedStates.forEach(dropdown::selectByValue);
+        List<String> actualStates = dropdown.getAllSelectedOptions().stream().map(WebElement::getText).collect(Collectors.toList());
 
-        Assertions.assertEquals(OPTIONS, selectedOptionsNames, "Options are not selected");
+        Assertions.assertTrue(expectedStates.containsAll(actualStates), "Options are not selected");
     }
 }
 

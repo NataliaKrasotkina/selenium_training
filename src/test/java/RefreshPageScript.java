@@ -7,8 +7,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
 import static pages.RefreshPage.*;
 
 
@@ -21,6 +19,7 @@ public class RefreshPageScript {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        driver.get(DOWNLOAD_PROGRESS_URL);
     }
 
     @AfterEach
@@ -29,16 +28,14 @@ public class RefreshPageScript {
     }
 
     @Test
-    public void testRefreshPage() {
-        driver.get(REFRESH_URL);
+    public void refreshPageTest() {
         driver.findElement(DOWNLOAD_BUTTON).click();
         waitForVisibleText();
         driver.navigate().refresh();
     }
 
     private void waitForVisibleText() {
-        WebDriverWait wait = new WebDriverWait(driver, 50);
-        wait.pollingEvery(Duration.ofSeconds(0, 1));
-        wait.until((ExpectedConditions.textToBePresentInElement(driver.findElement(PERCENT_TEXT), EXPECTED_PERCENT_TEXT)));
+        new WebDriverWait(driver, 50, 200)
+                .until(ExpectedConditions.textToBePresentInElement(driver.findElement(PROGRESS_CIRCLE), EXPECTED_PERCENT_TEXT));
     }
 }

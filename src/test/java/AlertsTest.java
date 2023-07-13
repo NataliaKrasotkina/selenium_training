@@ -22,6 +22,7 @@ public class AlertsTest {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        driver.get(ALERTS_URL);
     }
 
     @AfterEach
@@ -30,18 +31,15 @@ public class AlertsTest {
     }
 
     @Test
-    public void testJavaScriptConfirmBoxText() {
-        driver.get(ALERTS_URL);
+    public void javaScriptConfirmBoxTextTest() {
         driver.findElement(CLICK_ME_CONFIRM_BUTTON).click();
         Alert alert = driver.switchTo().alert();
 
         Assertions.assertEquals(ALERT_TEXT, alert.getText(), "Message is not correct");
-        alert.accept();
     }
 
     @Test
-    public void testJavaScriptConfirmBoxCancel() {
-        driver.get(ALERTS_URL);
+    public void javaScriptConfirmBoxCancelTest() {
         driver.findElement(CLICK_ME_CONFIRM_BUTTON).click();
         Alert alert = driver.switchTo().alert();
         alert.dismiss();
@@ -51,8 +49,7 @@ public class AlertsTest {
     }
 
     @Test
-    public void testJavaScriptAlertBox() {
-        driver.get(ALERTS_URL);
+    public void javaScriptAlertBoxTest() {
         driver.findElement(CLICK_FOR_PROMPT_BUTTON).click();
         Alert alert = driver.switchTo().alert();
         alert.sendKeys(TEXT);

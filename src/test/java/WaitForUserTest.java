@@ -20,6 +20,7 @@ public class WaitForUserTest {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        driver.get(DATA_LOADING_URL);
     }
 
     @AfterEach
@@ -28,8 +29,7 @@ public class WaitForUserTest {
     }
 
     @Test
-    public void testWaitForUser() {
-        driver.get(WAIT_URL);
+    public void waitForUserTest() {
         driver.findElement(GET_NEW_USER).click();
         waitForVisibleElement();
 
