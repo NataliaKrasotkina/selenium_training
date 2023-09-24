@@ -3,50 +3,64 @@ package pages;
 import configuration.DriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class YandexLoginPage {
-    public final static By ENTER_BUTTON = By.cssSelector(".Button2_view_default.Button2_size_m");
-    public final static By LOGIN_INPUT = By.id("passp-field-login");
-    public final static By LOGIN_BUTTON = By.id("passp:sign-in");
-    public final static By PASSWORD_INPUT = By.name("passwd");
-    public final static By ACCOUNT_NAME = By.xpath("//a[contains(@class, 'user-account_left' )]/span[@class='user-account__name']");
-    public final static By ACCOUNT_ICON = By.xpath("//a[contains(@class, 'user-account_left' )]/span[@class='user-account__name']/..");
-    public final static By LOGOUT_BUTTON = By.xpath("//a[@aria-label='Log out']");
+    @FindBy(css = ".Button2_view_default.Button2_size_m")
+    private WebElement enterButton;
+    @FindBy(id = "passp-field-login")
+    private WebElement loginInput;
+    @FindBy(id = "passp:sign-in")
+    private WebElement loginButton;
+    @FindBy(name = "passwd")
+    private WebElement passwordInput;
+    @FindBy(xpath = "//a[contains(@class, 'user-account_left' )]/span[@class='user-account__name']")
+    private WebElement accountName;
+    @FindBy(xpath = "//a[contains(@class, 'user-account_left' )]/span[@class='user-account__name']/..")
+    private WebElement accountIcon;
+    @FindBy(xpath = "//a[@aria-label='Log out']")
+    private WebElement logoutButton;
 
+    private String enterButtonCss = ".Button2_view_default.Button2_size_m";
 
     private WebDriver driver;
 
     public YandexLoginPage() {
         driver = DriverManager.getInstance();
+        PageFactory.initElements(driver, this);
     }
 
     public void clickEnterButton() {
-        driver.findElement(ENTER_BUTTON).click();
+       enterButton.click();
     }
 
     public void enterTextToLoginField(String login) {
-        driver.findElement(LOGIN_INPUT).sendKeys(login);
+        loginInput.sendKeys(login);
     }
 
     public void clickLoginButton() {
-        driver.findElement(LOGIN_BUTTON).click();
+        loginButton.click();
     }
 
     public void enterTextToPasswordField(String password) {
-        driver.findElement(PASSWORD_INPUT).sendKeys(password);
+        passwordInput.sendKeys(password);
     }
 
     public String getAccountName() {
-        return driver.findElement(ACCOUNT_NAME).getText();
+        return accountName.getText();
     }
 
     public void clickLogOutButton() {
-        driver.findElement(LOGOUT_BUTTON).click();
+        logoutButton.click();
     }
+
     public void clickAccountIcon() {
-        driver.findElement(ACCOUNT_ICON).click();
+        accountIcon.click();
     }
+
     public boolean isEnterButtonPresent() {
-        return driver.findElements(ENTER_BUTTON).size()>0;
+        return driver.findElements(By.cssSelector(enterButtonCss)).size() > 0;
     }
 }
