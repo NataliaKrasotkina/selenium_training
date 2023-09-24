@@ -1,39 +1,39 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
+import configuration.DriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.util.concurrent.TimeUnit;
-
-import static pages.YandexLoginPage.*;
+import pages.YandexLoginPage;
 
 public class YandexTest {
     private WebDriver driver;
     private final static String PASSWORD = "NK852456";
     private final static String LOGIN = "NatalliaKrasotkina";
     private final static String MAIL_URL = "https://mail.yandex.com";
+    private YandexLoginPage yandexLoginPage;
 
     @BeforeEach
     void setup() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver = DriverManager.getInstance();
+        yandexLoginPage = new YandexLoginPage();
     }
 
     @Test
     void yandexTest() {
         driver.get(MAIL_URL);
-        driver.findElement(ENTER_BUTTON).click();
-        driver.findElement(LOGIN_INPUT).sendKeys(LOGIN);
-        driver.findElement(LOGIN_BUTTON).click();
-        driver.findElement(PASSWORD_INPUT).sendKeys(PASSWORD);
-        driver.findElement(LOGIN_BUTTON).click();
+        yandexLoginPage.clickEnterButton();
+        yandexLoginPage.enterTextToLoginField(LOGIN);
+        yandexLoginPage.clickLoginButton();
+        yandexLoginPage.enterTextToPasswordField(PASSWORD);
+        yandexLoginPage.clickLoginButton();
 
-        Assertions.assertEquals(LOGIN, driver.findElement(ACCOUNT_NAME).getText(), "Login failed");
+        Assertions.assertEquals(LOGIN, yandexLoginPage.getAccountName(), "Login failed");
+
+        yandexLoginPage.clickAccountIcon();
+        yandexLoginPage.clickLogOutButton();
+
+        Assertions.assertTrue(yandexLoginPage.isEnterButtonPresent(), "Log Out failed");
     }
 
     @AfterEach
