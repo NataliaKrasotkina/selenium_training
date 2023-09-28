@@ -1,23 +1,26 @@
 package configuration;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 
 public class DriverManager {
-
-    private static WebDriver instance;
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static WebDriver getInstance() {
-        if (instance == null) {
-            WebDriverManager.chromedriver().setup();
-            instance = new ChromeDriver();
-            instance.manage().window().maximize();
-            instance.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        if (driver.get() == null) {
+            driver.set(new ChromeDriver());
+            driver.get().manage().window().maximize();
+            driver.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         }
-        return instance;
+
+        return driver.get();
+    }
+
+    public static void quit() {
+        driver.get().quit();
+        driver.set(null);
     }
 }
