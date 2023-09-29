@@ -16,7 +16,6 @@ public class BaseTest {
     void setup() {
         driver = DriverManager.getInstance();
         loginPage = new LoginPage();
-        mailPage = new MailPage();
         driver.get(MAIL_URL);
     }
 
