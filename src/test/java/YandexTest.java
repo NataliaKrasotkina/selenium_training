@@ -14,7 +14,9 @@ public class YandexTest extends BaseTest {
 
     @Test
     void loginTest() {
+
         Assertions.assertEquals(LOGIN, mailPage.getAccountName(), "Login failed");
+        takeScreenshot("user_logged.png");
     }
 
     @Test
