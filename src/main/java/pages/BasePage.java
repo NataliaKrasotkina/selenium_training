@@ -1,20 +1,22 @@
 package pages;
 
 import configuration.DriverManager;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
 public class BasePage {
     protected WebDriver driver;
 
     public BasePage() {
         driver = DriverManager.getInstance();
+        PageFactory.initElements(driver, this);
     }
 
-    protected boolean isElementDisplayed(By locator) {
+    protected boolean isElementDisplayed(WebElement element) {
         try {
-            return driver.findElement(locator).isDisplayed();
+            return element.isDisplayed();
         } catch (NoSuchElementException ex) {
             return false;
         }
