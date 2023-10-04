@@ -5,6 +5,7 @@ import org.openqa.selenium.support.FindBy;
 
 
 public class MailPage extends BasePage {
+
     @FindBy(xpath = "//a[contains(@class, 'user-account_left' )]/span[@class='user-account__name']")
     private WebElement accountName;
     @FindBy(xpath = "//a[contains(@class, 'user-account_left' )]/span[@class='user-account__name']/..")

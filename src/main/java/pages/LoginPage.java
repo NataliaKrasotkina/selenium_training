@@ -4,6 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends BasePage {
+
     @FindBy(css = ".Button2_view_default.Button2_size_m")
     private WebElement enterButton;
     @FindBy(id = "passp-field-login")
