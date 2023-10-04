@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 
+
 public class BaseTest {
     private WebDriver driver;
     private final static String MAIL_URL = "https://mail.yandex.com";
