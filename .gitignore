@@ -13,3 +13,7 @@ hs_err_pid*
 .idea/
 target/
 *.iml
+.allure
+.allure-report
+.allure-results
+.resources\screenshots
