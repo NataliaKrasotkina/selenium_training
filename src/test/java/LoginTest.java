@@ -1,6 +1,8 @@
 import configuration.MyTestWatcher;
-import io.qameta.allure.*;
-import org.junit.jupiter.api.Assertions;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.TmsLink;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,41 +25,19 @@ public class LoginTest extends BaseTest {
         mailPage = loginPage.login(LOGIN, PASSWORD);
     }
 
-    @Test()
+    @Test
     @Description("Test Description: This test attempts to log into the website using a login and a password. Fails if any error happens.")
     @TmsLink("ID=1")
-    public void loginTest() {
-
-        validateUserIsLoggedIn();
-        takeScreenshot();
-    }
-
-    @Step("Validate user is logged in")
-    private void validateUserIsLoggedIn() {
-        Assertions.assertEquals(LOGIN, mailPage.getAccountName(), "Login failed");
-    }
-
-    @Step("Take Screenshot")
-    private void takeScreenshot() {
-        takeScreenshot("user_logged.png");
+    void loginTest() {
+        mailPage.verifyAccountName(LOGIN);
     }
 
     @Test
     @Description("Test Description: This test attempts to log out from the website. Fails if any error happens.")
     @TmsLink("ID=2")
-    public void logoutTest() {
-        logOutUser();
-        validateUserIsLoggedOut();
-    }
-
-    @Step("Log out user")
-    private void logOutUser() {
+    void logoutTest() {
         mailPage.clickAccountIcon();
         mailPage.clickLogOutButton();
-    }
-
-    @Step("Validate user is logged in")
-    private void validateUserIsLoggedOut() {
-        Assertions.assertTrue(loginPage.isEnterButtonDisplayed(), "Log Out failed");
+        loginPage.verifyEnterButton();
     }
 }
