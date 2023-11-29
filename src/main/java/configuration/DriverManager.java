@@ -2,6 +2,7 @@ package configuration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.time.Duration;
 
@@ -17,6 +18,15 @@ public class DriverManager {
         }
 
         return driver.get();
+    }
+
+    public static String getInfo() {
+        var cap = ((RemoteWebDriver) getInstance()).getCapabilities();
+        String browserName = cap.getBrowserName();
+        String platform = cap.getPlatformName().toString();
+        String version = cap.getBrowserVersion();
+
+        return String.format("browser: %s v: %s platform: %s", browserName, version, platform);
     }
 
     public static void quit() {

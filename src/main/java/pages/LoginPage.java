@@ -1,5 +1,7 @@
 package pages;
 
+import io.qameta.allure.Step;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 
 public class LoginPage extends BasePage {
@@ -31,6 +33,7 @@ public class LoginPage extends BasePage {
         driver.findElement(PASSWORD_INPUT).sendKeys(password);
     }
 
+    @Step ("Log in")
     public MailPage login(String login, String password) {
         clickEnterButton();
         enterTextToLoginField(login);
@@ -42,4 +45,8 @@ public class LoginPage extends BasePage {
     public boolean isEnterButtonDisplayed() {
         return isElementDisplayed(ENTER_BUTTON);
     }
+    @Step ("Verify Enter Button")
+     public void verifyEnterButton(){
+         Assertions.assertTrue (isEnterButtonDisplayed(), "Log Out failed");
+     }
 }
