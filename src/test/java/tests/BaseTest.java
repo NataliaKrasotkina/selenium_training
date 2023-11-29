@@ -1,3 +1,5 @@
+package tests;
+
 import com.google.common.collect.ImmutableMap;
 import configuration.DriverManager;
 import configuration.MyTestWatcher;

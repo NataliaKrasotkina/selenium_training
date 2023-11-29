@@ -1,3 +1,5 @@
+package tests;
+
 import configuration.MyTestWatcher;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
